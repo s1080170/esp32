@@ -34,6 +34,9 @@ void example_i2s_init()
 
     audio_in_queue = xQueueCreate(2, 1024);
     audio_out_queue = xQueueCreate(2, 640);    
+
+    i2s_set_clk(EXAMPLE_I2S_NUM, 8000, EXAMPLE_I2S_SAMPLE_BITS, 1);
+
 }
 
 /*
@@ -156,7 +159,6 @@ void example_i2s_adc_dac(void*arg)
     uint8_t i2s_write_buff[640*2];
     int play_len = 640;
     int byte_count = 0;
-    i2s_set_clk(EXAMPLE_I2S_NUM, 8000, EXAMPLE_I2S_SAMPLE_BITS, 1);
 
     while (1) {
         // ADC
@@ -177,9 +179,9 @@ void example_i2s_adc_dac(void*arg)
             //vTaskDelay(1000 / portTICK_PERIOD_MS);
             continue;
         }
-        ESP_LOGI(AUDIO_TAG, "wr buffer.\n");
         int i2s_wr_len = example_i2s_dac_data_scale(i2s_write_buff, i2s_write_buff_tmp, play_len);
         i2s_write(EXAMPLE_I2S_NUM, i2s_write_buff, i2s_wr_len, &bytes_written, portMAX_DELAY);
+        ESP_LOGI(AUDIO_TAG, "wr buffer.\n");
         //byte_count += play_len;
         //printf("ADDA TASK:out dequeue: total=%d play_len=%d bytes_written=%d\n", byte_count, play_len, bytes_written);
         //example_disp_buf((uint8_t*) i2s_write_buff, 32);

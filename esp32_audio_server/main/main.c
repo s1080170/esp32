@@ -19,11 +19,11 @@ esp_err_t app_main()
     initialise_wifi();
 
     //xTaskCreate(i2s_test_task, "i2s test task", 1024 * 6, NULL, 5, NULL);
-    xTaskCreate(example_i2s_adc_dac, "example_i2s_adc_dac", 1024 * 6, NULL, 5, NULL);
+    //xTaskCreate(example_i2s_adc_dac, "example_i2s_adc_dac", 1024 * 6, NULL, 5, NULL);
     //xTaskCreate(adc_read_task, "ADC read task", 2048, NULL, 5, NULL);
 
     xTaskCreate(&printWiFiIP,"printWiFiIP",2048,NULL,5,NULL);
-    xTaskCreate(&tcp_server,"tcp_server",4096,NULL,5,NULL);
+    xTaskCreate(&tcp_server,"tcp_server",1024*6,NULL,5,NULL);
 
     return ESP_OK;
 }

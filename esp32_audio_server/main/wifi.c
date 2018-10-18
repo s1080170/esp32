@@ -95,11 +95,15 @@ void tcp_server(void *pvParam){
     int recv_total_size = 640;
     int recv_buf_idx;
     uint8_t recv_buf[1024];
-    uint8_t out_buf[640];
     static struct sockaddr_in remote_addr;
     static unsigned int socklen;
     socklen = sizeof(remote_addr);
     int cs;//client socket
+
+    size_t bytes_written;
+    //uint8_t i2s_write_buff_tmp[640];
+    uint8_t i2s_write_buff[640*2];
+
     xEventGroupWaitBits(wifi_event_group,CONNECTED_BIT,false,true,portMAX_DELAY);
     while(1){
         s = socket(AF_INET, SOCK_STREAM, 0);
@@ -137,45 +141,33 @@ void tcp_server(void *pvParam){
                 while(1){
                     r = recv(cs, recv_buf + recv_buf_idx, recv_total_size - recv_buf_idx, 0);
                     
-                    if(r < 0){
-                        break;
-                    }
-
-                    if(r == 0){
+                    if(r <= 0){
                         break;
                     }
 
                     recv_buf_idx += r;
                 } 
 
-                
                 if(recv_buf_idx != 0){
-                    ESP_LOGI(WIFI_TAG, "rd socket. n=%d d1=%2x r=%2d e=%d",
-                                                     recv_buf_idx, recv_buf[0], r, errno);
-                    //printf("count=%d : %2x\n", recv_buf_idx, recv_buf[0]);
+                    ESP_LOGI(WIFI_TAG, "rd socket. n=%d d1=%4d r=%2d e=%d",
+                                                     recv_buf_idx, (int)(recv_buf[0]-128), r, errno);
 
-                    memcpy(out_buf, (uint8_t*)recv_buf, 640);
+                    //memcpy(i2s_write_buff_tmp, (uint8_t*)recv_buf, 640);
                     //if( xQueueSend(audio_out_queue, (void *)&out_buf, portMAX_DELAY) != pdTRUE){
-                    if( xQueueSend(audio_out_queue, (void *)&out_buf, 0) != pdTRUE){
-                        ESP_LOGE(WIFI_TAG, "... Failed to enqueue data.\n");
+                    //if( xQueueSend(audio_out_queue, (void *)&out_buf, 0) != pdTRUE){
+                    //    ESP_LOGE(WIFI_TAG, "... Failed to enqueue data.\n");
                         //vTaskDelay(1000 / portTICK_PERIOD_MS);
-                        continue;
-                    }
+                        //continue;
+                    //}
 
+                    //if( write(cs , "ACK" , 3) < 0){
+                    //    ESP_LOGE(WIFI_TAG, "... Send failed \n");
+                    //    break;
+                    //}
 
-                    /*if( write(cs , recv_buf , recv_buf_idx) < 0)
-                     {
-                        ESP_LOGE(WIFI_TAG, "... Send failed \n");
-                        vTaskDelay(4000 / portTICK_PERIOD_MS);
-                        break;
-                    }
-                    ESP_LOGI(WIFI_TAG, "... socket send success\n");
-                    */
-                    /*for(int i = 0; i < recv_buf_idx; i++){
-                        if( (i % 16) == 0 ) printf("\n %2d: ", (i / 16 + 1));
-                        printf("%.2x ", recv_buf[i]);
-                    }
-                    printf("\n");*/
+                    int i2s_wr_len = example_i2s_dac_data_scale(i2s_write_buff, recv_buf, 640);
+                    i2s_write(EXAMPLE_I2S_NUM, i2s_write_buff, i2s_wr_len, &bytes_written, portMAX_DELAY);
+                    ESP_LOGI("AUD", "wr buffer.\n");
                 }
                 vTaskDelay(10 / portTICK_PERIOD_MS);
            }
