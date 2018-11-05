@@ -23,17 +23,21 @@
                             EXAMPLE CONFIG
 ---------------------------------------------------------------*/
 //
-#define SSID "XperiaZ4s1080170"
-#define PASSPHARSE "f46d123ec7fa"
+//#define SSID "XperiaZ4s1080170"
+//#define PASSPHARSE "f46d123ec7fa"
 
-//#define SSID "SPWN_H36_95E736"
-//#define PASSPHARSE "1r555it47btyg55"
+#define SSID "SPWN_H36_95E736"
+#define PASSPHARSE "1r555it47btyg55"
 
-//
-#define MESSAGE "Hello TCP Client!!"
 //
 #define LISTENQ 2
-
+//
+#define BROADCAST_IP_ADDR "192.168.100.255" // you might need to change this acroding to the subnet mask and gateway address
+//
+#define TCP_PORT 		3000
+#define UDP_RX_PORT 	4000
+#define UDP_TX_PORT 	4001
+#define BROADCAST_PORT 	4001
 
 /*---------------------------------------------------------------
                             FUNCTION
@@ -67,5 +71,7 @@ void printWiFiIP(void *pvParam);
  * @brief
  */
 void tcp_server(void *pvParam);
+void udp_server(void *pvParam);
+void udp_boardcast(void *pvParam);
 
 #endif /* __WIFI_H__*/

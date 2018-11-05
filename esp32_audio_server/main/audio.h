@@ -39,10 +39,11 @@
 #define EXAMPLE_I2S_BUF_DEBUG     (1)
 //I2S read buffer length
 //#define EXAMPLE_I2S_READ_LEN      (16 * 1024)
-#define EXAMPLE_I2S_READ_LEN      (640)
+//#define EXAMPLE_I2S_WRITE_LEN      (640)
+#define EXAMPLE_I2S_READ_LEN      (1024)
 //I2S data format
-#define EXAMPLE_I2S_FORMAT        (I2S_CHANNEL_FMT_RIGHT_LEFT)		// 0
-//#define EXAMPLE_I2S_FORMAT        (I2S_CHANNEL_FMT_ONLY_RIGHT)	// 3												
+//#define EXAMPLE_I2S_FORMAT        (I2S_CHANNEL_FMT_RIGHT_LEFT)		// 0
+#define EXAMPLE_I2S_FORMAT        (I2S_CHANNEL_FMT_ONLY_RIGHT)	// 3												
 //I2S channel number
 #define EXAMPLE_I2S_CHANNEL_NUM   ((EXAMPLE_I2S_FORMAT < I2S_CHANNEL_FMT_ONLY_RIGHT) ? (2) : (1))
 //I2S built-in ADC unit
@@ -51,12 +52,12 @@
 #define I2S_ADC_CHANNEL           ADC1_CHANNEL_0
 
 //flash record size, for recording 5 seconds' data
-#define FLASH_RECORD_SIZE         (EXAMPLE_I2S_CHANNEL_NUM * EXAMPLE_I2S_SAMPLE_RATE * EXAMPLE_I2S_SAMPLE_BITS / 8 * 5)
-#define FLASH_ERASE_SIZE          (FLASH_RECORD_SIZE % FLASH_SECTOR_SIZE == 0) ? FLASH_RECORD_SIZE : FLASH_RECORD_SIZE + (FLASH_SECTOR_SIZE - FLASH_RECORD_SIZE % FLASH_SECTOR_SIZE)
+//#define FLASH_RECORD_SIZE         (EXAMPLE_I2S_CHANNEL_NUM * EXAMPLE_I2S_SAMPLE_RATE * EXAMPLE_I2S_SAMPLE_BITS / 8 * 5)
+//#define FLASH_ERASE_SIZE          (FLASH_RECORD_SIZE % FLASH_SECTOR_SIZE == 0) ? FLASH_RECORD_SIZE : FLASH_RECORD_SIZE + (FLASH_SECTOR_SIZE - FLASH_RECORD_SIZE % FLASH_SECTOR_SIZE)
 //sector size of flash
-#define FLASH_SECTOR_SIZE         (0x1000)
+//#define FLASH_SECTOR_SIZE         (0x1000)
 //flash read / write address
-#define FLASH_ADDR                (0x200000)
+//#define FLASH_ADDR                (0x200000)
 
 
 /*---------------------------------------------------------------
@@ -84,6 +85,7 @@ void example_erase_flash(void);
  * @brief debug buffer data
  */
 void example_disp_buf(uint8_t* buf, int length);
+void example_disp_buf2(uint8_t* buf, int length);
 /**
  * @brief Reset i2s clock and mode
  */
@@ -105,6 +107,7 @@ int example_i2s_dac_data_scale(uint8_t* d_buff, uint8_t* s_buff, uint32_t len);
  *        Scale each 12bit ADC data to 8bit DAC data.
  */
 void example_i2s_adc_data_scale(uint8_t * d_buff, uint8_t* s_buff, uint32_t len);
+void example_i2s_adc_data_scale2(uint8_t * d_buff, uint8_t* s_buff, uint32_t len);
 /**
  * @brief I2S ADC/DAC example
  *        1. Erase flash
