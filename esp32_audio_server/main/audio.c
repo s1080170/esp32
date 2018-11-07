@@ -31,6 +31,9 @@ void example_i2s_init()
 	 i2s_set_dac_mode(I2S_DAC_CHANNEL_BOTH_EN);
 	 //init ADC pad
 	 i2s_set_adc_mode(I2S_ADC_UNIT, I2S_ADC_CHANNEL);
+     //start to use I2S built-in ADC mode.
+     //this function would acquire the lock of ADC.
+     i2s_adc_enable(EXAMPLE_I2S_NUM);
 
     //audio_in_queue = xQueueCreate(2, 1024);
     //audio_out_queue = xQueueCreate(2, 640);    

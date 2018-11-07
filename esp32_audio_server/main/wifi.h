@@ -23,16 +23,17 @@
                             EXAMPLE CONFIG
 ---------------------------------------------------------------*/
 //
-//#define SSID "XperiaZ4s1080170"
-//#define PASSPHARSE "f46d123ec7fa"
+#define SSID "XperiaZ4s1080170"
+#define PASSPHARSE "f46d123ec7fa"
 
-#define SSID "SPWN_H36_95E736"
-#define PASSPHARSE "1r555it47btyg55"
+//#define SSID "SPWN_H36_95E736"
+//#define PASSPHARSE "1r555it47btyg55"
 
 //
 #define LISTENQ 2
 //
-#define BROADCAST_IP_ADDR "192.168.100.255" // you might need to change this acroding to the subnet mask and gateway address
+//#define BROADCAST_IP_ADDR "192.168.100.255" // you might need to change this acroding to the subnet mask and gateway address
+#define BROADCAST_IP_ADDR "192.168.43.255" // you might need to change this acroding to the subnet mask and gateway address
 //
 #define TCP_PORT 		3000
 #define UDP_RX_PORT 	4000

@@ -80,7 +80,10 @@ void printWiFiIP(void *pvParam){
     xEventGroupWaitBits(wifi_event_group,CONNECTED_BIT,false,true,portMAX_DELAY);
     tcpip_adapter_ip_info_t ip_info;
     ESP_ERROR_CHECK(tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &ip_info));
-    printf("IP :  %s\n", ip4addr_ntoa(&ip_info.ip));
+    printf("IP ADDRESS:  %s\n", ip4addr_ntoa(&ip_info.ip));
+    tcpip_adapter_ip_info_t bcast_ip_info;
+    bcast_ip_info.ip.addr = ip_info.ip.addr | 0xFF000000;
+    printf("BROADCAST :  %s\n", ip4addr_ntoa(&bcast_ip_info.ip));
     vTaskDelete( NULL );
 }
 
@@ -90,11 +93,15 @@ void printWiFiIP(void *pvParam){
 void udp_boardcast(void *pvParam){
     ESP_LOGI(WIFI_TAG,"udp_boardcast task started \n");
 
+    tcpip_adapter_ip_info_t ip_info;
+    ESP_ERROR_CHECK(tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &ip_info));
+    ip_info.ip.addr |= 0xFF000000;
+
     int s, r;
     struct sockaddr_in cast_addr;
     memset(&cast_addr, 0, sizeof(struct sockaddr_in));
     cast_addr.sin_family = AF_INET;
-    cast_addr.sin_addr.s_addr = inet_addr(BROADCAST_IP_ADDR);
+    cast_addr.sin_addr.s_addr = inet_addr(ip4addr_ntoa(&ip_info.ip));
     cast_addr.sin_port = htons(BROADCAST_PORT);
 
     while(1){
