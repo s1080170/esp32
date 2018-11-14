@@ -23,11 +23,8 @@
                             EXAMPLE CONFIG
 ---------------------------------------------------------------*/
 //
-#define SSID "XperiaZ4s1080170"
-#define PASSPHARSE "f46d123ec7fa"
-
-//#define SSID "SPWN_H36_95E736"
-//#define PASSPHARSE "1r555it47btyg55"
+#define SSID "SSID"
+#define PASSPHARSE "PASSWORD"
 
 //
 #define LISTENQ 2
